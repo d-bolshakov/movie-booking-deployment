@@ -1,2 +1,4 @@
-/volumes/*
+/volumes/postgres-prod/*
+!/volumes/postgres-prod/postgresql.conf
+!/volumes/postgres-prod/pg_hba.conf
 !/volumes/moviecovers-prod
