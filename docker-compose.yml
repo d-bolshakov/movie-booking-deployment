@@ -13,10 +13,10 @@ services:
   backend:
     container_name: movie-booking-backend
     image: denysbolshakov/movie-booking-backend
-    build: 
-      context: .
-      dockerfile: Dockerfile.backend
-      target: prod
+#    build: 
+#      context: .
+#      dockerfile: Dockerfile.backend
+#      target: prod
     ports:
       - 5000:5000
     restart: always
@@ -30,9 +30,9 @@ services:
   migrations:
     container_name: movie-booking-migrations
     image: denysbolshakov/movie-booking-migrations
-    build:
-      context: .
-      dockerfile: Dockerfile.migrations
+#    build:
+#      context: .
+#      dockerfile: Dockerfile.migrations
     env_file:
       - .production.env
     command: './database/scripts/wait-for-it.sh db:5432 -- ./database/scripts/migrate.sh'
