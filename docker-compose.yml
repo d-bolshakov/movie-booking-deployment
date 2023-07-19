@@ -8,15 +8,20 @@ services:
       POSTGRES_PASSWORD: root
     volumes:
       - ./volumes/postgres-prod:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     
   
   backend:
     container_name: movie-booking-backend
     image: denysbolshakov/movie-booking-backend
-#    build: 
-#      context: .
-#      dockerfile: Dockerfile.backend
-#      target: prod
+    build: 
+      context: .
+      dockerfile: Dockerfile.backend
+      target: prod
     ports:
       - 5000:5000
     restart: always
@@ -25,19 +30,21 @@ services:
     volumes:
       - ./volumes/moviecovers-prod:/app/dist/static/moviecovers
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   migrations:
     container_name: movie-booking-migrations
     image: denysbolshakov/movie-booking-migrations
-#    build:
-#      context: .
-#      dockerfile: Dockerfile.migrations
+    build:
+      context: .
+      dockerfile: Dockerfile.migrations
     env_file:
       - .production.env
     command: './database/scripts/wait-for-it.sh db:5432 -- ./database/scripts/migrate.sh'
-    depends_on:
-      - db
+        depends_on:
+      db:
+        condition: service_healthy
 
 networks:
   default:
