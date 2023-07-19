@@ -41,7 +41,6 @@ services:
       dockerfile: Dockerfile.migrations
     env_file:
       - .production.env
-    command: './database/scripts/wait-for-it.sh db:5432 -- ./database/scripts/migrate.sh'
     depends_on:
       db:
         condition: service_healthy
